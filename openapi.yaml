@@ -1,0 +1,794 @@
+openapi: 3.0.3
+info:
+  title: Lokbazaar
+  version: 0.1.0
+  description: 'Three-module National AI Marketplace for #AIforAll: data listings with provenance and
+    lawful basis, annotation jobs with QA gates, and deployable models with trial access plus FAT ethics
+    reviews.'
+  x-product-slug: ai-gov-lokbazaar
+  x-source: ai-in-gov/NationalStrategy-for-AI-Discussion-Paper/
+servers:
+- url: https://api.example.com
+tags:
+- name: Problems
+  description: Government and PSU sector problems
+- name: DataListings
+  description: Data marketplace module
+- name: AnnotationJobs
+  description: Annotation marketplace module
+- name: ModelListings
+  description: Deployable model marketplace
+- name: Trials
+  description: Trial access before procurement
+- name: Reviews
+  description: FAT ethics and related reviews
+- name: Transactions
+  description: Cleared marketplace transactions
+paths:
+  /v1/problems:
+    get:
+      operationId: listSectorProblems
+      tags:
+      - Problems
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeSectorProblem'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createSectorProblem
+      tags:
+      - Problems
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SectorProblemCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeSectorProblem'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/problems/{problemId}:
+    parameters:
+    - $ref: '#/components/parameters/ProblemId'
+    get:
+      operationId: getSectorProblem
+      tags:
+      - Problems
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeSectorProblem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/data-listings:
+    get:
+      operationId: listDataListings
+      tags:
+      - DataListings
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeDataListing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDataListing
+      tags:
+      - DataListings
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataListingCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeDataListing'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/annotation-jobs:
+    get:
+      operationId: listAnnotationJobs
+      tags:
+      - AnnotationJobs
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeAnnotationJob'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createAnnotationJob
+      tags:
+      - AnnotationJobs
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnotationJobCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeAnnotationJob'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/model-listings:
+    get:
+      operationId: listModelListings
+      tags:
+      - ModelListings
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeModelListing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createModelListing
+      tags:
+      - ModelListings
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelListingCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeModelListing'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/trials:
+    get:
+      operationId: listModelTrials
+      tags:
+      - Trials
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeModelTrial'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createModelTrial
+      tags:
+      - Trials
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelTrialCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeModelTrial'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/ethics-reviews:
+    get:
+      operationId: listEthicsReviews
+      tags:
+      - Reviews
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeEthicsReview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEthicsReview
+      tags:
+      - Reviews
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EthicsReviewCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEnvelopeEthicsReview'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/transactions:
+    get:
+      operationId: listMarketplaceTransactions
+      tags:
+      - Transactions
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEnvelopeMarketplaceTransaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+    ProblemId:
+      name: problemId
+      in: path
+      required: true
+      schema:
+        type: string
+    ListingId:
+      name: listingId
+      in: path
+      required: true
+      schema:
+        type: string
+    ModelId:
+      name: modelId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    UnprocessableEntity:
+      description: Unprocessable entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  schemas:
+    ResponseMeta:
+      type: object
+      required:
+      - requestId
+      - timestamp
+      properties:
+        requestId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    Problem:
+      type: object
+      required:
+      - type
+      - title
+      - status
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    SectorProblem:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        sector:
+          type: string
+        status:
+          type: string
+    DataListing:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        anonymisationStatus:
+          type: string
+        lawfulBasis:
+          type: string
+        status:
+          type: string
+    AnnotationJob:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        listingId:
+          type: string
+        accuracyStandard:
+          type: number
+        qaStatus:
+          type: string
+        status:
+          type: string
+    ModelListing:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        procurementReady:
+          type: boolean
+        ethicsStatus:
+          type: string
+        status:
+          type: string
+    ModelTrial:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        modelListingId:
+          type: string
+        buyerId:
+          type: string
+        resultSummary:
+          type: string
+        status:
+          type: string
+    EthicsReview:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        modelListingId:
+          type: string
+        fatStatus:
+          type: string
+        decision:
+          type: string
+    MarketplaceTransaction:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        module:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+    SectorProblemCreate:
+      type: object
+      required:
+      - title
+      - sector
+      properties:
+        title:
+          type: string
+        sector:
+          type: string
+          enum:
+          - healthcare
+          - agriculture
+          - education
+          - smart_cities
+          - smart_mobility
+        description:
+          type: string
+    DataListingCreate:
+      type: object
+      required:
+      - title
+      - lawfulBasis
+      - anonymisationStatus
+      properties:
+        title:
+          type: string
+        lawfulBasis:
+          type: string
+        anonymisationStatus:
+          type: string
+        licenceTerms:
+          type: string
+        problemId:
+          type: string
+    AnnotationJobCreate:
+      type: object
+      required:
+      - accuracyStandard
+      properties:
+        listingId:
+          type: string
+        accuracyStandard:
+          type: number
+        language:
+          type: string
+        instructions:
+          type: string
+    ModelListingCreate:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+        problemId:
+          type: string
+        trialEndpoint:
+          type: string
+        researchProvenance:
+          type: string
+    ModelTrialCreate:
+      type: object
+      required:
+      - modelListingId
+      properties:
+        modelListingId:
+          type: string
+        objectives:
+          type: string
+    EthicsReviewCreate:
+      type: object
+      required:
+      - modelListingId
+      - decision
+      properties:
+        modelListingId:
+          type: string
+        decision:
+          type: string
+          enum:
+          - cleared
+          - blocked
+        fairnessNotes:
+          type: string
+        accountabilityNotes:
+          type: string
+        transparencyNotes:
+          type: string
+    DataEnvelopeSectorProblem:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/SectorProblem'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeSectorProblem:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SectorProblem'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeDataListing:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/DataListing'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeDataListing:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/DataListing'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeAnnotationJob:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/AnnotationJob'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeAnnotationJob:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/AnnotationJob'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeModelListing:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/ModelListing'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeModelListing:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ModelListing'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeModelTrial:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/ModelTrial'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeModelTrial:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/ModelTrial'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeEthicsReview:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/EthicsReview'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeEthicsReview:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/EthicsReview'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    DataEnvelopeMarketplaceTransaction:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          $ref: '#/components/schemas/MarketplaceTransaction'
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
+    ListEnvelopeMarketplaceTransaction:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: object
+          required:
+          - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/MarketplaceTransaction'
+            nextCursor:
+              type: string
+        meta:
+          $ref: '#/components/schemas/ResponseMeta'
